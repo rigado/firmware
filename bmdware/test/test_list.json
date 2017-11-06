@@ -1,0 +1,10 @@
+{
+    "AT Commands Tests": [
+    	"at-beacon/at_beacon_setting_test.js", 
+    	"at-beacon/at_custom_beacon_test.js",
+        "at-gpio/at_gpio_config_test.js",
+        "at-gpio/at_gpio_error_check_test.js",
+        "at-gpio/at_gpio_read_test.js",
+        "at-gpio/at_gpio_set_test.js"
+    ]
+}

@@ -1,0 +1,8 @@
+{
+	"nrf52":{
+		"at_ctrl_pin":"0e",
+		"beacon_only_pin":"0d",
+		"output_pins":["10"],
+		"input_pins":["0d"]
+	}
+}

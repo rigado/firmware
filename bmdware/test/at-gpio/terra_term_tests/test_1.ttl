@@ -1,0 +1,95 @@
+;-------------------------------------------------------------------------------
+;  File: test_1.ttl
+;  Description:	BMDware serial port test 1
+;				Check configuration of all pins
+;				Configure all pins as outputs
+;				Check configuration of all pins
+;				Configure all pins as input (default)
+;				Check configuration of all pins
+;-------------------------------------------------------------------------------
+;  Disclosure
+;
+;  Copyright (c) 2017 Rigado, LLC
+;  All rights reserved.
+;
+;  Licensees are granted free, non-transferable use of the information. NO
+;  WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+;  the file.
+;-------------------------------------------------------------------------------
+TestId = '1'
+TestDir = 'C:\Users\Anthony Verbeck\Desktop\BMDware\tests'
+
+;-------------------------------------------------------------------------------
+;	Script Start
+;	Change /C to your port.
+;-------------------------------------------------------------------------------
+connect '/C=27'
+gettime timestr "%Y%m%d-%H%M%S"
+
+sprintf2 filename 'test_%s_%s.log' TestId timestr
+sprintf2 log_start 'Test:%s Date/Time:%s' TestId timestr
+settitle log_start
+
+;-------------------------------------------------------------------------------
+;	Change to test directory and execute test
+;	This script assumes the following:
+;	1) A good connection has already been established with the BMD-300 eval board.
+;	2) That the configuration has been saved as the default
+;-------------------------------------------------------------------------------
+changedir TestDir
+logopen filename 0 0
+logwrite log_start
+logwrite #13#10
+logwrite 'Log begin'#13#10
+
+sendln  'at'
+wait 'OK'
+
+;-------------------------------------------------------------------------------
+;	check status of all pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	configure all pins as output
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcfg %02x 01 00' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	check status of all pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	configure all pins to default
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcfg %02x 00 00' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	check status of all pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+logwrite 'Log end'#13#10
+logclose
+closett

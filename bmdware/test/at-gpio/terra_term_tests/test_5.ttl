@@ -1,0 +1,86 @@
+;-------------------------------------------------------------------------------
+;  File: test_5.ttl
+;  Description:	BMDware serial port tests
+;				Test various error configurations (part 2)
+;-------------------------------------------------------------------------------
+;  Disclosure
+;
+;  Copyright (c) 2017 Rigado, LLC
+;  All rights reserved.
+;
+;  Licensees are granted free, non-transferable use of the information. NO
+;  WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+;  the file.
+;-------------------------------------------------------------------------------
+TestId = '5'
+TestDir = 'C:\Users\Anthony Verbeck\Desktop\BMDware\tests'
+
+;-------------------------------------------------------------------------------
+;	Script Start
+;	Change /C to your port.
+;-------------------------------------------------------------------------------
+connect '/C=27'
+gettime timestr "%Y%m%d-%H%M%S"
+
+sprintf2 filename 'test_%s_%s.log' TestId timestr
+sprintf2 log_start 'Test:%s Date/Time:%s' TestId timestr
+settitle log_start
+
+;-------------------------------------------------------------------------------
+;	Change to test directory and execute test
+;	This script assumes the following:
+;	1) A good connection has already been established with the BMD-300 eval board.
+;	2) That the configuration has been saved as the default
+;-------------------------------------------------------------------------------
+changedir TestDir
+logopen filename 0 0
+logwrite log_start
+logwrite #13#10
+logwrite 'Log begin'#13#10
+
+sendln  'at'
+wait 'OK'
+
+;-------------------------------------------------------------------------------
+;	check status of all pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	set out of range values for I/O (2..255)
+;-------------------------------------------------------------------------------
+for i 0 255
+  sprintf2 cmd 'at$gcfg 00 %02x 00' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	set out of range values for pull up (2, 4..255)
+;-------------------------------------------------------------------------------
+sendln 'at$gcfg 00 00 02'
+mpause 100
+
+for i 0 255
+  sprintf2 cmd 'at$gcfg 00 00 %02x' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	check status of all valid pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+
+logwrite 'Log end'#13#10
+logclose
+closett

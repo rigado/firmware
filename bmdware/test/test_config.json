@@ -1,0 +1,16 @@
+{
+	"test_suite_title": "BMDware",
+	"version_under_test": "",
+	"firmware_name": "bmdware",
+	"binary_under_test": "bmdware_3_1_2.bin",
+	"device_mac": "",
+	"adv_name": "RigCom",
+	"log_level": "5",
+	"test_beacon_uuid": "c3a3ba79b64a4e198ab7c8f915ece8c5",
+	"test_beacon_major": "5489",
+	"test_beacon_minor": "2037",
+	"report_file": "bmdware_test_report.csv",
+	"target_uart": "/dev/ttyUSB0",
+	"setup_uart": "/dev/ttyACM1",
+    "baudrate": "57600"
+}

@@ -1,0 +1,332 @@
+;-------------------------------------------------------------------------------
+;  File: test_6.ttl
+;  Description:	BMDware serial port tests
+;				Test various I/O conditions
+;-------------------------------------------------------------------------------
+;  Disclosure
+;
+;  Copyright (c) 2017 Rigado, LLC
+;  All rights reserved.
+;
+;  Licensees are granted free, non-transferable use of the information. NO
+;  WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+;  the file.
+;-------------------------------------------------------------------------------
+TestId = '6'
+TestDir = 'C:\Users\Anthony Verbeck\Desktop\BMDware\tests'
+
+;-------------------------------------------------------------------------------
+;	Script Start
+;	Change /C to your port.
+;-------------------------------------------------------------------------------
+connect '/C=27'
+gettime timestr "%Y%m%d-%H%M%S"
+
+sprintf2 filename 'test_%s_%s.log' TestId timestr
+sprintf2 log_start 'Test:%s Date/Time:%s' TestId timestr
+settitle log_start
+
+;-------------------------------------------------------------------------------
+;	Change to test directory and execute test
+;	This script assumes the following:
+;	1) A good connection has already been established with the BMD-300 eval board.
+;	2) That the configuration has been saved as the default
+;-------------------------------------------------------------------------------
+changedir TestDir
+logopen filename 0 0
+logwrite log_start
+logwrite #13#10
+logwrite 'Log begin'#13#10
+
+sendln  'at'
+wait 'OK'
+
+;-------------------------------------------------------------------------------
+;	Configure output pins in this list
+;
+;	Built-in testing
+;	P0.15(0x07)			BTN3	(input)
+;	P0.16(0x08)			BTN4	(input)
+;	P0.17(0x09)			LED1	(output)
+;	P0.18(0x0A)			LED2	(output)	
+;	P0.19(0x0B)			LED3	(output)
+;	P0.20(0x0C)			LED4	(output)
+;
+;	Header J6
+;	P0.22(0x0D)	(output) <--> P0.23(0x0E) (input)
+;	P0.24(0x0F)	(output) <--> P0.25(0x10) (input)
+;	P0.26(0x11)	(output) <--> P0.27(0x12) (input)
+;
+;	Header J8
+;	P0.03(0x03)	(output) <--> P0.04(0x04) (input)
+;	P0.28(0x13)	(output) <--> P0.29(0x14) (input)
+;	P0.30(0x15)	(output) <--> P0.31(0x16) (input)
+;-------------------------------------------------------------------------------
+sendln 'at$gcfg  0d 01 00'
+mpause 100
+sendln 'at$gcfg  0f 01 00'
+mpause 100
+sendln 'at$gcfg  11 01 00'
+mpause 100
+
+sendln 'at$gcfg  03 01 00'
+mpause 100
+sendln 'at$gcfg  13 01 00'
+mpause 100
+sendln 'at$gcfg  15 01 00'
+mpause 100
+
+sendln 'at$gcfg  09 01 00'
+mpause 100
+sendln 'at$gcfg  0a 01 00'
+mpause 100
+sendln 'at$gcfg  0b 01 00'
+mpause 100
+sendln 'at$gcfg  0c 01 00'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	Configure input pins in this list
+;
+;	Built-in testing
+;	P0.15(0x07)			BTN3	(input)
+;	P0.16(0x08)			BTN4	(input)
+;	P0.17(0x09)			LED1	(output)
+;	P0.18(0x0A)			LED2	(output)	
+;	P0.19(0x0B)			LED3	(output)
+;	P0.20(0x0C)			LED4	(output)
+;
+;	Header J6
+;	P0.22(0x0D)	(output) <--> P0.23(0x0E) (input)
+;	P0.24(0x0F)	(output) <--> P0.25(0x10) (input)
+;	P0.26(0x11)	(output) <--> P0.27(0x12) (input)
+;
+;	Header J8
+;	P0.03(0x03)	(output) <--> P0.04(0x04) (input)
+;	P0.28(0x13)	(output) <--> P0.29(0x14) (input)
+;	P0.30(0x15)	(output) <--> P0.31(0x16) (input)
+;-------------------------------------------------------------------------------
+sendln 'at$gcfg  0e 00 00'
+mpause 100
+sendln 'at$gcfg  10 00 00'
+mpause 100
+sendln 'at$gcfg  12 00 00'
+mpause 100
+
+sendln 'at$gcfg  04 00 00'
+mpause 100
+sendln 'at$gcfg  14 00 00'
+mpause 100
+sendln 'at$gcfg  16 00 00'
+mpause 100
+
+sendln 'at$gcfg  07 00 03'
+mpause 100
+sendln 'at$gcfg  08 00 03'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	wiggle output pins (set all 1)
+;-------------------------------------------------------------------------------
+sendln 'at$gset  0d 01'
+mpause 100
+sendln 'at$gset  0f 01'
+mpause 100
+sendln 'at$gset  11 01'
+mpause 100
+
+sendln 'at$gset  03 01'
+mpause 100
+sendln 'at$gset  13 01'
+mpause 100
+sendln 'at$gset  15 01'
+mpause 100
+
+sendln 'at$gset  09 01'
+mpause 100
+sendln 'at$gset  0a 01'
+mpause 100
+sendln 'at$gset  0b 01'
+mpause 100
+sendln 'at$gset  0c 01'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	verify input pins
+;-------------------------------------------------------------------------------
+sendln 'at$gread  0e'
+mpause 100
+sendln 'at$gread  10'
+mpause 100
+sendln 'at$gread  12'
+mpause 100
+sendln 'at$gread  04'
+mpause 100
+sendln 'at$gread  14'
+mpause 100
+sendln 'at$gread  16'
+mpause 100
+sendln 'at$gread  07'
+mpause 100
+sendln 'at$gread  08'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	wiggle output pins (set all 0)
+;-------------------------------------------------------------------------------
+sendln 'at$gset  0d 00'
+mpause 100
+sendln 'at$gset  0f 00'
+mpause 100
+sendln 'at$gset  11 00'
+mpause 100
+
+sendln 'at$gset  03 00'
+mpause 100
+sendln 'at$gset  13 00'
+mpause 100
+sendln 'at$gset  15 00'
+mpause 100
+
+sendln 'at$gset  09 00'
+mpause 100
+sendln 'at$gset  0a 00'
+mpause 100
+sendln 'at$gset  0b 00'
+mpause 100
+sendln 'at$gset  0c 00'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	verify input pins
+;-------------------------------------------------------------------------------
+sendln 'at$gread  0e'
+mpause 100
+sendln 'at$gread  10'
+mpause 100
+sendln 'at$gread  12'
+mpause 100
+sendln 'at$gread  04'
+mpause 100
+sendln 'at$gread  14'
+mpause 100
+sendln 'at$gread  16'
+mpause 100
+sendln 'at$gread  07'
+mpause 100
+sendln 'at$gread  08'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	wiggle output pins (set 01010101)
+;-------------------------------------------------------------------------------
+sendln 'at$gset  0d 00'
+mpause 100
+sendln 'at$gset  0f 01'
+mpause 100
+sendln 'at$gset  11 00'
+mpause 100
+
+sendln 'at$gset  03 01'
+mpause 100
+sendln 'at$gset  13 00'
+mpause 100
+sendln 'at$gset  15 01'
+mpause 100
+
+sendln 'at$gset  09 00'
+mpause 100
+sendln 'at$gset  0a 01'
+mpause 100
+sendln 'at$gset  0b 00'
+mpause 100
+sendln 'at$gset  0c 01'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	verify input pins
+;-------------------------------------------------------------------------------
+sendln 'at$gread  0e'
+mpause 100
+sendln 'at$gread  10'
+mpause 100
+sendln 'at$gread  12'
+mpause 100
+sendln 'at$gread  04'
+mpause 100
+sendln 'at$gread  14'
+mpause 100
+sendln 'at$gread  16'
+mpause 100
+sendln 'at$gread  07'
+mpause 100
+sendln 'at$gread  08'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	wiggle output pins (set 10101010)
+;-------------------------------------------------------------------------------
+sendln 'at$gset  0d 01'
+mpause 100
+sendln 'at$gset  0f 00'
+mpause 100
+sendln 'at$gset  11 01'
+mpause 100
+
+sendln 'at$gset  03 00'
+mpause 100
+sendln 'at$gset  13 01'
+mpause 100
+sendln 'at$gset  15 00'
+mpause 100
+
+sendln 'at$gset  09 01'
+mpause 100
+sendln 'at$gset  0a 00'
+mpause 100
+sendln 'at$gset  0b 01'
+mpause 100
+sendln 'at$gset  0c 00'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	verify input pins
+;-------------------------------------------------------------------------------
+sendln 'at$gread  0e'
+mpause 100
+sendln 'at$gread  10'
+mpause 100
+sendln 'at$gread  12'
+mpause 100
+sendln 'at$gread  04'
+mpause 100
+sendln 'at$gread  14'
+mpause 100
+sendln 'at$gread  16'
+mpause 100
+sendln 'at$gread  07'
+mpause 100
+sendln 'at$gread  08'
+mpause 100
+
+;-------------------------------------------------------------------------------
+;	configure all pins to default
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcfg %02x 00 00' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	check status of all pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+logwrite 'Log end'#13#10
+logclose
+closett

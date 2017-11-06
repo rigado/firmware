@@ -1,0 +1,101 @@
+;-------------------------------------------------------------------------------
+;  File: test_7.ttl
+;  Description:	BMDware serial port test 7
+;				Test config-pin / config-status
+;-------------------------------------------------------------------------------
+;  Disclosure
+;
+;  Copyright (c) 2017 Rigado, LLC
+;  All rights reserved.
+;
+;  Licensees are granted free, non-transferable use of the information. NO
+;  WARRANTY of ANY KIND is provided. This heading must NOT be removed from
+;  the file.
+;-------------------------------------------------------------------------------
+TestId = '7'
+TestDir = 'C:\Users\Anthony Verbeck\Desktop\BMDware\tests'
+
+;-------------------------------------------------------------------------------
+;	Script Start
+;	Change /C to your port.
+;-------------------------------------------------------------------------------
+connect '/C=27'
+gettime timestr "%Y%m%d-%H%M%S"
+
+sprintf2 filename 'test_%s_%s.log' TestId timestr
+sprintf2 log_start 'Test:%s Date/Time:%s' TestId timestr
+settitle log_start
+
+;-------------------------------------------------------------------------------
+;	Change to test directory and execute test
+;	This script assumes the following:
+;	1) A good connection has already been established with the BMD-300 eval board.
+;	2) That the configuration has been saved as the default
+;-------------------------------------------------------------------------------
+changedir TestDir
+logopen filename 0 0
+logwrite log_start
+logwrite #13#10
+logwrite 'Log begin'#13#10
+
+sendln  'at'
+wait 'OK'
+
+;-------------------------------------------------------------------------------
+;	check status of all pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	get current pin
+;-------------------------------------------------------------------------------
+  sendln 'at$gstc?'
+  mpause 100
+
+;-------------------------------------------------------------------------------
+;	set configure status pin (active low)
+;-------------------------------------------------------------------------------
+for i 0 255
+  sprintf2 cmd 'at$gstc %02x 00' i
+  sendln cmd
+  mpause 100
+  sendln 'at$gstc?'
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	set configure status pin (active high)
+;-------------------------------------------------------------------------------
+for i 0 255
+  sprintf2 cmd 'at$gstc %02x 01' i
+  sendln cmd
+  mpause 100
+  sendln 'at$gstc?'
+  mpause 100
+next
+
+;-------------------------------------------------------------------------------
+;	reset value and check status
+;-------------------------------------------------------------------------------
+  sendln 'at$gstc ff 00'
+  mpause 100
+  sendln 'at$gstc?'
+  mpause 100
+
+;-------------------------------------------------------------------------------
+;	check status of all valid pins
+;-------------------------------------------------------------------------------
+for i 0 22
+  sprintf2 cmd 'at$gcget %02x' i
+  sendln cmd
+  mpause 100
+next
+
+
+logwrite 'Log end'#13#10
+logclose
+closett

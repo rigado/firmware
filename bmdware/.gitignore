@@ -1,0 +1,14 @@
+*.uvopt
+*.uvgui*
+*.dep
+JLink*
+_build
+*.bak
+*.bin
+*.hex
+*.000*
+*agreement*
+*.pdf
+*agreement*
+tests/.idea
+node_modules
