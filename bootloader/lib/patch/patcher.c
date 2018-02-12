@@ -8,7 +8,7 @@ static heatshrink_decoder m_decoder;
 static struct bspatch_stream m_stream;
 size_t total_sunk_cnt = 0;
 
-static int heatshrink_read(const struct bspatch_stream* stream, void* buffer, uint32_t length);
+static int32_t heatshrink_read(const struct bspatch_stream* stream, void* buffer, uint32_t length);
 
 int32_t patcher_init(patch_init_t * init_data) 
 {

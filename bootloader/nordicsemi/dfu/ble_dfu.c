@@ -22,6 +22,7 @@
 #include <string.h>
 #include <stddef.h>
 #include "dfu_transport_ble.h"
+#include "sdk_config.h"
 
 #define MAX_DFU_PKT_LEN         BLE_GAP_MTU_MAX                                 /**< Maximum length (in bytes) of the DFU Packet characteristic. */
 #define PKT_START_DFU_PARAM_LEN 1                                               /**< Length (in bytes) of the parameters for Packet Start DFU Request. */
@@ -43,7 +44,7 @@ enum
     OP_CODE_RECEIVE_PATCH_INIT = 10,                                            /**< Value of the Op code field for 'Patch init' command.*/
     OP_CODE_RECEIVE_PATCH      = 11,                                            /**< Value of the Op code field for 'Receive patch' command.*/
     OP_CODE_GET_PROTOCOL_VER   = 12,                                            /**< Value of the Op code field for 'Get protocol version' command.*/
-#ifdef SDK12
+#if defined(SDK12) || defined(SDK14)
 	OP_CODE_GET_MAX_MTU        = 13,                                            /**< Value of the Op code field for 'Get Max MTU' command.*/
 #endif
     OP_CODE_RESPONSE           = 16,                                            /**< Value of the Op code field for 'Response.*/
@@ -157,7 +158,11 @@ static uint32_t dfu_ctrl_pt_add(ble_dfu_t * const p_dfu)
     attr_char_value.p_attr_md = &attr_md;
     attr_char_value.init_len  = 0;
     attr_char_value.init_offs = 0;
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
     attr_char_value.max_len   = BLE_L2CAP_MTU_DEF;
+#else
+    attr_char_value.max_len   = NRF_SDH_BLE_GATT_MAX_MTU_SIZE;
+#endif
     attr_char_value.p_value   = NULL;
 
     return sd_ble_gatts_characteristic_add(p_dfu->service_handle,

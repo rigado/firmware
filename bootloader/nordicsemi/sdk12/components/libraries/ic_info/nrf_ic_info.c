@@ -18,7 +18,9 @@
 
 void nrf_ic_info_get(nrf_ic_info_t * p_ic_info)
 {
+#if defined(NRF51)
     uint32_t ic_data    = ((*((uint32_t volatile *)0xF0000FE8)) & 0x000000F0) >> 4;
+#endif
     uint32_t ic_part_no = ((*((uint32_t volatile *)0xF0000FE0)) & 0x000000FF);
 
     switch (ic_part_no)

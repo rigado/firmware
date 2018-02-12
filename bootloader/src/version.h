@@ -2,11 +2,11 @@
 #define VERSION_H
 
 /* Keep these three representations in sync */
-#define FIRMWARE_MAJOR_VERSION      3
-#define FIRMWARE_MINOR_VERSION      4
+#define FIRMWARE_MAJOR_VERSION      5
+#define FIRMWARE_MINOR_VERSION      0
 #define FIRMWARE_BUILD_NUMBER       0
 
-#define BUILD_VERSION_NUMBER        47
+#define BUILD_VERSION_NUMBER        0
 #define API_PROTOCOL_VERSION        3
 
 #define __V_STR(x) #x

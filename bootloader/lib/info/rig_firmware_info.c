@@ -13,7 +13,8 @@
 
 #include "rig_firmware_info.h"
 
-const rig_firmware_info_t bl_info __attribute((at(BOOTLOADER_REGION_START + 0x1000))) =
+__attribute__((section(".info")))
+static const rig_firmware_info_t bl_info =
 {
     0x465325D4,
     sizeof(rig_firmware_info_t),
@@ -51,3 +52,8 @@ const rig_firmware_info_t bl_info __attribute((at(BOOTLOADER_REGION_START + 0x10
     API_PROTOCOL_VERSION,
     0x49B0784C
 };
+
+const rig_firmware_info_t* rig_firmware_info_get_info()
+{
+    return &bl_info;
+}

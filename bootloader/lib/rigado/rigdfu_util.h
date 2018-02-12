@@ -7,8 +7,7 @@
 /* Return x represented as hex character 0-f */
 uint8_t hex_digit(uint8_t x);
 
-/* Safe version of bcmp that doesn't leak (as much) timing information. */
-int timingsafe_bcmp(const void *a, const void *b, int len);
+int32_t timingsafe_bcmp(const void *a, const void *b, int len);
 
 /* Return true if all entries in buf are equal to val */
 bool all_equal(const void *buf, uint8_t val, int len);

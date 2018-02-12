@@ -16,7 +16,7 @@
 #ifdef SDK12
 #include "nrf_bootloader_app_start.h"
 #else
-#include "bootloader_util.h"
+//#include "bootloader_util.h"
 #endif
 #include "bootloader_settings.h"
 #include "dfu.h"
@@ -233,7 +233,7 @@ static void bootloader_settings_save(bootloader_settings_t * p_settings)
 }
 
 
-void bootloader_dfu_update_process(dfu_update_status_t update_status)
+void    bootloader_dfu_update_process(dfu_update_status_t update_status)
 {
     static bootloader_settings_t  settings;
     const bootloader_settings_t * p_bootloader_settings;
@@ -481,7 +481,7 @@ void bootloader_launch_app_after_reset(void)
     sd_softdevice_vector_table_base_set(DFU_BANK_0_REGION_START);
 
     /* Jump to application */
-#ifdef SDK12
+#if defined(SDK12) || defined(SDK14)
     nrf_bootloader_app_start(DFU_BANK_0_REGION_START);
 #else
     bootloader_util_app_start(DFU_BANK_0_REGION_START);
@@ -544,7 +544,7 @@ void bootloader_settings_get(bootloader_settings_t * const p_settings)
     const bootloader_settings_t *flash_settings;
 
     bootloader_util_settings_get(&flash_settings);
-    int i;
+    uint32_t i;
     for (i = 0; i < sizeof(bootloader_settings_t); i++)
         ((uint8_t *)p_settings)[i] =
             ((const volatile uint8_t *)flash_settings)[i];

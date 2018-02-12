@@ -47,9 +47,12 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
+    .vect :
+    {
+        KEEP(*(.Vectors))
+    } > VECTORS
 	.text :
 	{
-		KEEP(*(.Vectors))
 		*(.text*)
 
 		KEEP(*(.init))

@@ -48,8 +48,16 @@
 #include "app_timer.h"
 #include "nrf_error.h"
 #include "boards.h"
-#include "ble_debug_assert_handler.h"
-#include "softdevice_handler.h"
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
+    #include "ble_debug_assert_handler.h"
+    #include "softdevice_handler.h"
+#elif defined(SDK14)
+    #include "nrf_sdh.h"
+    #include "nrf_sdh_ble.h"
+    #include "nrf_dfu_mbr.h"
+    #include "nrf_bootloader_info.h"
+    #include "nrf_log_ctrl.h"
+#endif
 #include "nrf_mbr.h"
 #include "fstorage.h"
 #include "nrf_clock.h"
@@ -64,22 +72,28 @@
 #include "nrf_delay.h"
 #include "version.h"
 #include "rigdfu.h"
+#include "nrf_log.h"
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT 1                                                       /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
 #define APP_GPIOTE_MAX_USERS            1                                                       /**< Number of GPIOTE users in total. Used by button module and dfu_transport_serial module (flow control). */
-
-#define APP_TIMER_PRESCALER             0                                                       /**< Value of the RTC1 PRESCALER register. */
-#define APP_TIMER_MAX_TIMERS            3                                                       /**< Maximum number of simultaneously created timers. */
-#define APP_TIMER_OP_QUEUE_SIZE         4                                                       /**< Size of timer operation queues. */
-
 
 #define APP_TIMER_SCHED_EVT_SIZE        sizeof(app_timer_evt_schedule_func_t)                   /**< Size of button events being passed through the scheduler (is to be used for computing the maximum size of scheduler events). */
 #define SCHED_MAX_EVENT_DATA_SIZE       MAX(APP_TIMER_SCHED_EVT_SIZE, 0)                        /**< Maximum size of scheduler events. */
 
 #define SCHED_QUEUE_SIZE                20                                                      /**< Maximum number of events in the scheduler queue. */
 
-#define TICKS_FROM_MSEC(x) APP_TIMER_TICKS(x, APP_TIMER_PRESCALER)
+
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
+    //app_timer
+    #define APP_TIMER_PRESCALER             0                                                       /**< Value of the RTC1 PRESCALER register. */
+    #define APP_TIMER_MAX_TIMERS            3                                                       /**< Maximum number of simultaneously created timers. */
+    #define APP_TIMER_OP_QUEUE_SIZE         4                                                       /**< Size of timer operation queues. */
+
+    #define TICKS_FROM_MSEC(x) APP_TIMER_TICKS(x, APP_TIMER_PRESCALER)
+#elif defined(SDK14)
+    #define TICKS_FROM_MSEC(x) APP_TIMER_TICKS(x)
+#endif
 
 #ifdef SDK10
 /**@brief Function for error handling, which is called when an error has occurred. 
@@ -132,11 +146,17 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
  */
 static void timers_init(void)
 {
+#if defined(SDK11) || defined(SDK12)
     // Initialize timer module, making it use the scheduler.
     APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, NULL);
+#elif defined(SDK14)
+    app_timer_init();
+#else
+    #error "need to define timers_init!!"
+#endif
 }
 
-
+#if 0
 /**@brief Function for dispatching a BLE stack event to all modules with a BLE stack event handler.
  *
  * @details This function is called from the scheduler in the main loop after a BLE stack
@@ -148,7 +168,7 @@ static void sys_evt_dispatch(uint32_t event)
 {
     fstorage_sys_event_handler(event);
 }
-
+#endif
 
 /**@brief Function for initializing the BLE stack.
  *
@@ -188,7 +208,7 @@ static void ble_stack_init(bool init_softdevice)
     err_code = softdevice_sys_evt_handler_set(sys_evt_dispatch);
     APP_ERROR_CHECK(err_code);
 }
-#else
+#elif defined(SDK11) || defined(SDK12)
 static void ble_stack_init(bool init_softdevice)
 {
     uint32_t         err_code;
@@ -207,10 +227,11 @@ static void ble_stack_init(bool init_softdevice)
     SOFTDEVICE_HANDLER_INIT(&clock_lf_cfg, NULL);
 
     // Enable BLE stack.
-    ble_enable_params_t ble_enable_params;
-    // Only one connection as a central is used when performing dfu.
-    err_code = softdevice_enable_get_default_config(0, 1, &ble_enable_params);
-#ifdef SDK12
+   ble_enable_params_t ble_enable_params;
+   // Only one connection as a central is used when performing dfu.
+   err_code = softdevice_enable_get_default_config(0, 1, &ble_enable_params);
+
+#ifdef defined(SDK12)
     ble_enable_params.gatt_enable_params.att_mtu = BLE_GAP_MTU_MAX;
 #endif
     APP_ERROR_CHECK(err_code);
@@ -222,6 +243,51 @@ static void ble_stack_init(bool init_softdevice)
     err_code = softdevice_sys_evt_handler_set(sys_evt_dispatch);
     APP_ERROR_CHECK(err_code);
 }
+#elif defined(SDK14)
+static void ble_stack_init(bool init_softdevice)
+{
+    uint32_t  err_code;
+    uint32_t  ram_start = 0;
+
+    if (init_softdevice)
+    {
+        err_code = nrf_dfu_mbr_init_sd();
+        APP_ERROR_CHECK(err_code);
+    }
+
+    NRF_LOG_DEBUG("vector table: 0x%08x", BOOTLOADER_START_ADDR);
+    err_code = sd_softdevice_vector_table_base_set(BOOTLOADER_START_ADDR);
+    APP_ERROR_CHECK(err_code);
+
+    NRF_LOG_DEBUG("Error code - sd_softdevice_vector_table_base_set: 0x%08x", err_code);
+
+    err_code = nrf_sdh_enable_request();
+    APP_ERROR_CHECK(err_code);
+
+    //params from sdk_config.h
+    err_code = nrf_sdh_ble_default_cfg_set(0, &ram_start);
+    if (err_code != NRF_SUCCESS)
+    {
+        NRF_LOG_ERROR("Error code - sd_ble_cfg_set: 0x%08x", err_code);
+    }
+
+    NRF_LOG_DEBUG("Enabling SoftDevice.");
+
+    // Enable BLE stack.
+    err_code = nrf_sdh_ble_enable(&ram_start);
+    if (err_code != NRF_SUCCESS)
+    {
+        NRF_LOG_ERROR("Failed softdevice_enable: 0x%08x", err_code);
+    }
+    else
+    {
+        NRF_LOG_DEBUG("SoftDevice enabled.");
+    }
+
+    //NRF_SDH_BLE_OBSERVER(m_ble_evt_observer, BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
+}
+#else
+#error "need to define ble_stack_init()!!"
 #endif
 
 /**@brief Function for event scheduler initialization.
@@ -258,6 +324,11 @@ int main(void)
 {
     uint32_t err_code;
     uint8_t gpregret;
+
+#if defined(SDK14)
+    NRF_LOG_INIT(NULL);
+    NRF_LOG_INFO("rigdfu %s", RIGDFU_VERSION);
+#endif
 
     #if defined(NRF52)
     const uint8_t *key;
@@ -330,7 +401,7 @@ int main(void)
         scheduler_init();
     }
 
-#ifdef SDK12
+#if defined(SDK12) || defined(SDK14)
     err_code = sd_power_gpregret_clr(0, POWER_GPREGRET_GPREGRET_Msk);
 #else
     err_code = sd_power_gpregret_clr(POWER_GPREGRET_GPREGRET_Msk);
@@ -362,7 +433,7 @@ int main(void)
     /* Either the app is invalid, or the bootloader completed for a
        different reason (e.g. needing to reboot to finish SD or BL
        update).  Reboot now. */
-    softdevice_handler_sd_disable();
+    nrf_sdh_disable_request();
     nrf_delay_ms(10);
 
     if(dfu_should_check_readback_protect())

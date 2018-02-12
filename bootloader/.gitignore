@@ -19,3 +19,6 @@ Listings
 *.TMP
 !test/*
 !test_factory/*
+.cproject
+.project
+.settings/language.settings.xml

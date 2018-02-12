@@ -2,7 +2,7 @@
 #include "string.h"
 #include "rigdfu.h"
 #include "rigdfu_util.h"
-#include "nrf_ic_info.h"
+//#include "nrf_ic_info.h"
 
 
 #define HW_NRF52        "nRF52/"

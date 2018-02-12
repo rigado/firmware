@@ -10,22 +10,34 @@
  *
  */
 
+#include "sdk_common.h"
 #include "dfu_transport_ble.h"
 #include "dfu.h"
 #include "dfu_types.h"
 #include <stddef.h>
 #include <string.h>
+#include <rig_firmware_info.h>
+#include <ble_dis.h>
+
 #ifdef SDK10
     #include "nrf51.h"
 #else
     #include "nrf_soc.h"
 #endif
+
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
+    #include "softdevice_handler.h"
+    #include "ble_stack_handler_types.h"
+#else
+    //sdk14+
+    #include "nrf_sdh.h"
+    #include "nrf_sdh_ble.h"
+#endif
+
 #include "nrf_sdm.h"
 #include "nrf_gpio.h"
 #include "app_util.h"
 #include "app_error.h"
-#include "softdevice_handler.h"
-#include "ble_stack_handler_types.h"
 #include "ble_advdata.h"
 #include "ble_l2cap.h"
 #include "ble_gap.h"
@@ -51,25 +63,30 @@
 #include "rigdfu.h"
 #include "dfu_bank_internal.h"
 
-#define MIN_CONN_INTERVAL                    (uint16_t)(MSEC_TO_UNITS(20, UNIT_1_25_MS))             /**< Minimum acceptable connection interval (11.25 milliseconds). */
-#define MAX_CONN_INTERVAL                    (uint16_t)(MSEC_TO_UNITS(30, UNIT_1_25_MS))             /**< Maximum acceptable connection interval (15 milliseconds). */
+#define MIN_CONN_INTERVAL                    (uint16_t)(MSEC_TO_UNITS(7.5, UNIT_1_25_MS))             /**< Minimum acceptable connection interval (11.25 milliseconds). */
+#define MAX_CONN_INTERVAL                    (uint16_t)(MSEC_TO_UNITS(7.5, UNIT_1_25_MS))             /**< Maximum acceptable connection interval (15 milliseconds). */
 #define SLAVE_LATENCY                        0                                                       /**< Slave latency. */
 #define CONN_SUP_TIMEOUT                     (40 * 10)                                               /**< Connection supervisory timeout (4 seconds). */
 
-#define APP_TIMER_PRESCALER                  0                                                       /**< Value of the RTC1 PRESCALER register. */
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
+    #define APP_TIMER_PRESCALER                  0                                                       /**< Value of the RTC1 PRESCALER register. */
+    #define FIRST_CONN_PARAMS_UPDATE_DELAY       APP_TIMER_TICKS(100, APP_TIMER_PRESCALER)               /**< Time from the Connected event to first time sd_ble_gap_conn_param_update is called (100 milliseconds). */
+    #define NEXT_CONN_PARAMS_UPDATE_DELAY        APP_TIMER_TICKS(500, APP_TIMER_PRESCALER)               /**< Time between each call to sd_ble_gap_conn_param_update after the first call (500 milliseconds). */
+    #define MAX_CONN_PARAMS_UPDATE_COUNT         3                                                      /**< Number of attempts before giving up the connection parameter negotiation. */
+#else
+    #define FIRST_CONN_PARAMS_UPDATE_DELAY       APP_TIMER_TICKS(100)               /**< Time from the Connected event to first time sd_ble_gap_conn_param_update is called (100 milliseconds). */
+    #define NEXT_CONN_PARAMS_UPDATE_DELAY        APP_TIMER_TICKS(500)               /**< Time between each call to sd_ble_gap_conn_param_update after the first call (500 milliseconds). */
+    #define MAX_CONN_PARAMS_UPDATE_COUNT         3                                                      /**< Number of attempts before giving up the connection parameter negotiation. */
+#endif
 
-#define FIRST_CONN_PARAMS_UPDATE_DELAY       APP_TIMER_TICKS(100, APP_TIMER_PRESCALER)               /**< Time from the Connected event to first time sd_ble_gap_conn_param_update is called (100 milliseconds). */
-#define NEXT_CONN_PARAMS_UPDATE_DELAY        APP_TIMER_TICKS(500, APP_TIMER_PRESCALER)               /**< Time between each call to sd_ble_gap_conn_param_update after the first call (500 milliseconds). */
-#define MAX_CONN_PARAMS_UPDATE_COUNT         3                                                      /**< Number of attempts before giving up the connection parameter negotiation. */
-
-#define APP_ADV_INTERVAL                     400                                                      /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
+#define APP_ADV_INTERVAL                     MSEC_TO_UNITS(50, UNIT_0_625_MS)                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
 #define APP_ADV_TIMEOUT_IN_SECONDS           BLE_GAP_ADV_TIMEOUT_GENERAL_UNLIMITED                   /**< The advertising timeout in units of seconds. This is set to @ref BLE_GAP_ADV_TIMEOUT_GENERAL_UNLIMITED so that the advertisement is done as long as there there is a call to @ref dfu_transport_close function.*/
 
 #define SEC_PARAM_TIMEOUT                    30                                                      /**< Timeout for Pairing Request or Security Request (in seconds). */
 #define SEC_PARAM_BOND                       1                                                       /**< Perform bonding. */
 #define SEC_PARAM_MITM                       0                                                       /**< Man In The Middle protection not required. */
 #define SEC_PARAM_IO_CAPABILITIES            BLE_GAP_IO_CAPS_NONE                                    /**< No I/O capabilities. */
-#define SEC_PARAM_OOB                        0                                                       /**< Out Of Band data not available. */
+#define SEC_PARAM_OOB                        0                                                       /**< Out Of Bacpnd data not available. */
 #define SEC_PARAM_MIN_KEY_SIZE               7                                                       /**< Minimum encryption key size. */
 #define SEC_PARAM_MAX_KEY_SIZE               16                                                      /**< Maximum encryption key size. */
 
@@ -674,7 +691,11 @@ static void advertising_start(void)
     {
         uint32_t err_code;
 
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
         err_code = sd_ble_gap_adv_start(&m_adv_params);
+#else //sdk14+
+        err_code = sd_ble_gap_adv_start(&m_adv_params, BLE_CONN_CFG_TAG_DEFAULT);
+#endif
         APP_ERROR_CHECK(err_code);
 
         m_is_advertising = true;
@@ -777,7 +798,9 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
  */
 static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 {
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
     ble_conn_params_on_ble_evt(p_ble_evt);
+#endif
     ble_dfu_on_ble_evt(&m_dfu, p_ble_evt);
     on_ble_evt(p_ble_evt);
 }
@@ -835,7 +858,7 @@ static void gap_params_init(void)
 
     /* Ignore errors here.  We want to come up with any address even
        if this fails. */
-#ifdef SDK12
+#if defined(SDK12) || defined(SDK14)
     (void)sd_ble_gap_addr_set(&radio_mac);
 #else
     (void)sd_ble_gap_address_set(BLE_GAP_ADDR_CYCLE_MODE_NONE, &radio_mac);
@@ -923,11 +946,15 @@ static void services_init(void)
     ble_srv_ascii_to_utf8(&dis_init_obj.fw_rev_str,
                           RIGDFU_VERSION);
 
+    const rig_firmware_info_t* bl_info = rig_firmware_info_get_info();
+    char api[2] = { bl_info->protocol_version + 0x30, 0x00 };
+    ble_srv_ascii_to_utf8(&dis_init_obj.sw_rev_str, api);
+
     ble_srv_ascii_to_utf8(&dis_init_obj.serial_num_str,
                           (char *)rigado_get_mac_string());
                           
     uint8_t hw_info[20];
-    uint8_t hw_info_len = rigado_get_hardware_info(hw_info, sizeof(hw_info));
+    (void)rigado_get_hardware_info(hw_info, sizeof(hw_info));
     ble_srv_ascii_to_utf8(&dis_init_obj.hw_rev_str,
                             (char *)hw_info);
 
@@ -959,7 +986,13 @@ uint32_t dfu_transport_update_start_ble()
     
     m_pkt_type = PKT_TYPE_INVALID;
 
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
     err_code = softdevice_ble_evt_handler_set(ble_evt_dispatch);
+#else
+    #define BLE_OBSERVER_PRIO  2
+    NRF_SDH_BLE_OBSERVER(m_ble_evt_observer, BLE_OBSERVER_PRIO, ble_evt_dispatch, NULL);
+    err_code = NRF_SUCCESS;
+#endif
     if (err_code != NRF_SUCCESS)
     {
         return err_code;
@@ -1000,8 +1033,10 @@ uint32_t dfu_transport_close_ble()
         advertising_stop();
     }
 
+#if defined(SDK10) || defined(SDK11) || defined(SDK12)
     err_code = ble_conn_params_stop();
     (void)err_code; //ignore errors, at this point we are hanging up and don't care if there is an error
+#endif
 
     return NRF_SUCCESS;
 }

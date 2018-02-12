@@ -57,7 +57,7 @@ void bootloader_util_settings_get(const bootloader_settings_t ** pp_bootloader_s
 {
     // Read only pointer to bootloader settings in flash. 
     bootloader_settings_t const * const p_bootloader_settings =
-        (bootloader_settings_t *)&m_boot_settings[0];        
+        (bootloader_settings_t *)BOOTLOADER_SETTINGS_ADDRESS;
 
     *pp_bootloader_settings = p_bootloader_settings;
 }

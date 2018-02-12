@@ -63,7 +63,9 @@ typedef struct rig_firmware_info_s
                                     //24
 } rig_firmware_info_t;
 #pragma pack()
-    
+
+const rig_firmware_info_t* rig_firmware_info_get_info(void);
+
 #ifdef __cplusplus
 }
 #endif

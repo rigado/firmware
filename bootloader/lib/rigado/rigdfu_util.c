@@ -8,7 +8,7 @@ uint8_t hex_digit(uint8_t x)
 }
 
 /* Safe version of bcmp that doesn't leak (as much) timing information. */
-int timingsafe_bcmp(const void *a, const void *b, int len)
+int32_t timingsafe_bcmp(const void *a, const void *b, int len)
 {
     const volatile uint8_t *pa = a;
     const volatile uint8_t *pb = b;
