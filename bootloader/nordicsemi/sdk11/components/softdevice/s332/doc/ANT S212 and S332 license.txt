@@ -1,0 +1,273 @@
+The contents of this archive are subject to one or more licenses provided herein.
+
+
+EVALUATION AGREEMENT FOR S212 AND S332
+
+DISTRIBUTION OF THE S212 AND S332 SOFTWARE PACKAGES, AND ASSOCIATED
+INFORMATION, IS STRICTLY PROHIBITED EXCEPT AS PROVIDED UNDER PARAGRAPH 1 OF
+SECTION 1 (GRANT OF EVALUATION LICENSE).
+
+This Evaluation Agreement is for the Garmin Switzerland GmbH and its
+affiliated companies (collectively “Garmin”) S212 ANT Softdevice software
+package (“S212”) and the Garmin S332 ANT and BLE Softdevice software package
+(“S332”).  The S212 and S332 are to be used solely with Nordic Semiconductor
+ASA (“Nordic”) nRF52 series wireless connectivity integrated circuits (“nRF52
+series IC”). 
+
+You (“You” or “Licensee”) must carefully and thoroughly read this Evaluation
+Agreement (“Evaluation Agreement”), and accept to adhere to this Evaluation
+Agreement before downloading, installing and/or using any software or content
+in the S212 or S332 provided herewith.  If You are accepting this Evaluation
+Agreement on behalf of a commercial entity, You represent that You have the
+authority to contractually bind such entity to this Evaluation Agreement.
+
+YOU ACCEPT THIS EVALUATION AGREEMENT BY (A) CLICKING ACCEPT OR AGREE TO THIS
+EVALUATION AGREEMENT, WHERE THIS OPTION IS MADE AVAILABLE TO YOU; OR (B) BY
+ACTUALLY USING THE S212 OR S332, IN THIS CASE YOU AGREE THAT THE USE OF THE
+S212 OR S332 CONSTITUTES ACCEPTANCE OF THE EVALUATION AGREEMENT FROM THAT
+POINT ONWARDS.
+
+IF YOU DO NOT AGREE TO BE BOUND BY THE TERMS OF THIS EVALUATION AGREEMENT,
+THEN DO NOT DOWNLOAD, INSTALL/COMPLETE INSTALLATION OF, OR IN ANY OTHER WAY
+MAKE USE OF THE S212 OR S332 OR ANY DOCUMENTATION RELATED TO THE S212 OR S332.
+
+
+1.	Grant of Evaluation License 
+Subject to the terms in this Evaluation Agreement, Garmin grants You a
+limited, non-exclusive, non-transferable, non-sub licensable, revocable,
+royalty-free evaluation license to use the S212 and S332 solely in connection
+with the nRF52 series IC for Licensee’s internal evaluation, development and
+testing purposes (the “Limited Purpose”).  The Limited Purpose does include
+ability of Licensee to include the S212 and/or S332 into prototype and sample
+versions of Licensee products provided to Licensee’s customers and used solely
+for demonstration, evaluation and testing as part of Licensee’s business
+development activities; provided, however, that the S212 and/or S332 cannot be
+included in and/or provided as part of any software development kit,
+evaluation kit, development kit, reference design or other development tool
+set.  Licensee will provide access to the S212 and S332 only to those Licensee
+employees and subcontractors with a strict need to have access for the Limited
+Purpose.  Licensee shall be responsible for making such employees and
+contractors comply with the terms of this Evaluation Agreement and Licensee
+shall remain responsible for the actions of such employees and contractors.  
+
+Except as set forth in the preceding paragraph, Licensee shall not (i)
+disclose, display, reproduce, transfer or distribute the S212 or S332 to any
+third party, or (ii) use the S212 or S332 as incorporated into Licensee’s
+products or other products for commercial or revenue-generating purposes, or
+(iii) use the S212 or S332 for any purpose other than the Limited Purpose.  If
+Licensee desires to distribute the S212 or S332 for commercial purposes,
+Licensee shall be required to enter into a Distribution Agreement with Garmin. 
+
+Licensee shall not use the S212 or S332 for any purpose other than
+specifically authorized in this Evaluation Agreement. It is a material breach
+of this Evaluation Agreement to use or modify the S212 or S332 for use on any
+wireless connectivity integrated circuit other than the nRF52 series IC. 
+
+2.	Title 
+Garmin or its licensors (as applicable) retain full rights, title, and
+ownership to the S212 and S332, include any derivatives thereof and any and
+all patents, copyrights, trade secrets, trade names, trademarks, and other
+intellectual property rights in and to the S212 and S332.  Garmin licenses
+portions of the S212 and S332 from third party licensors, and such licensors
+retain their respective full rights, title, and ownership in and of the S212
+and S332 and any and all patents, copyrights, trade secrets, trade names,
+trademarks, and other intellectual property rights in and to the S212 and
+S332.  Licensee shall not remove or alter any copyright notices, proprietary
+information notices, disclaimer or restricted rights notices contained in the
+S212 and S332.  This Evaluation Agreement does not transfer any ownership
+interest in or intellectual property rights to the S212 or S332.
+
+3.	No Modifications or Reverse Engineering
+Licensee shall not, nor facilitate with a third part to, modify, reverse
+engineer, disassemble, decompile or otherwise attempt to discover the source
+code of any non-source code parts of the S212 and S332 including, but not
+limited to, pre-compiled hex files, binaries and object code.
+
+4.	Updates; No Support or Maintenance
+Garmin may extend, enhance or otherwise modify the S212 or S332 at any time
+without notice and Garmin shall not be obligated to provide any Licensee any
+notice or any updates to the S212 or S332.  If updates are made available to
+Licensee, the terms of the Evaluation Agreement shall govern such updates,
+unless the update is accompanied by a separate evaluation agreement in which
+the terms of that evaluation agreement shall govern.  You acknowledge and
+agree that Garmin has no express or implied obligation to announce or make
+available any updates of the S212 or S332 to anyone in the future.  Garmin is
+not obligated to provide any maintenance, technical or other support for the
+S212 or S332. 
+ 
+5.    End Use Restrictions 
+Licensee agrees that the S212 and S332 may not be sold, resold, transferred,
+diverted, exported, re-exported or disposed of (i) for use in activities
+involving the development, production, handling, use, operation, maintenance,
+storage, detection, identification or dissemination of nuclear, chemical, or
+biological weapons (including missiles and weapons of mass destruction), nor
+for use in any facilities engaged in activities related to such weapons,
+including where there are reasonable grounds to suspect any such use; (ii) for
+a military end-use in China or in any other country subject to any applicable
+arms embargo or for an item  designed, modified, configured, or adapted for a
+military application in China or any other country subject to an applicable
+arms embargo; (iii) to or for the benefit of individuals or entities listed on
+any applicable restricted or prohibited party lists; or (iv) to the following
+countries:  Cuba, Iran, North Korea, Sudan, and Syria.  Licensee further agree
+to abide by all other applicable export controls, trade sanctions and embargo
+laws, regulations, rules and licenses ("Export Controls and Sanctions Rules")
+in force from time to time as they relate to the S213 and S332. You
+acknowledge that your obligation to comply with applicable Export Controls and
+Sanctions Rules is independent of these terms and conditions and you agree to
+indemnify and hold Garmin and its licensors harmless from and against any
+third-party claim, including fines, losses, liabilities or legal fees that
+arise as a result of the breach by you of these terms and conditions or any
+applicable export controls, trade sanctions and embargo laws, regulations,
+rules and licenses.
+
+6.	No Other Rights 
+Licensee shall use the S212 and S332 only in compliance with this Evaluation
+Agreement and shall refrain from using the S212 and S332 in any way that may
+be contrary to this Evaluation Agreement.
+
+7.	Fees 
+Licensee understands and agrees that this Evaluation Agreement is solely a
+license to evaluate the S212 and S332 and that Licensee shall enter into a
+separate Distribution Agreement with Garmin before Licensee distributes either
+the S212 or S332 for commercial and/or revenue-generating purposes that
+contains a royalty structure different than that set forth in this Section 7.
+Garmin grants the evaluation license to the Licensee free of charge provided
+that the Licensee undertakes the obligations in the Evaluation Agreement and
+warrants to comply with the Evaluation Agreement. In the event that Licensee
+uses the S212 or S332 for commercial or revenue-generating purposes without
+entering into a Distribution Agreement with Garmin for the S212 and S332,
+Garmin shall be entitled to a royalty of USD $1.00 per item or component in a
+product sold or otherwise distributed by Licensee that incorporates the S212
+or S332 regardless of whether this Evaluation Agreement has been terminated or
+not.
+
+8.	DISCLAIMER OF WARRANTY 
+THE S212 AND S332 ARE PROVIDED “AS IS" WITHOUT WARRANTY OF ANY KIND EXPRESS OR
+IMPLIED AND NEITHER GARMIN, ITS LICENSORS OR THE COPYRIGHT HOLDERS MAKE ANY
+REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE OR
+THAT THE S212 AND S332 WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS,
+TRADEMARKS OR OTHER RIGHTS. THERE IS NO WARRANTY BY GARMIN OR BY ANY OTHER
+PARTY THAT THE FUNCTIONS CONTAINED IN THE S212 AND S332 WILL MEET THE
+REQUIREMENTS OF LICENSEE OR THAT THE OPERATION OF THE S212 AND S332 WILL BE
+UNINTERRUPTED OR ERROR-FREE. 
+
+9.	Limitation of Liability
+In no event shall Garmin, its employees, suppliers or licensors be liable for
+any lost profits, revenue, sales, data or costs of procurement of substitute
+goods or services, property damage, personal injury, interruption of business,
+loss of business information or for any special, direct, indirect, incidental,
+economic,  punitive, special or consequential damages, however caused and
+whether arising under contract, tort, negligence, or other theory of liability
+arising out of the use of or inability to use the S212 and S332, even if
+Garmin or its employees, suppliers or licensors are advised of the possibility
+of such damages. Because some countries/states/jurisdictions do not allow the
+exclusion or limitation of liability, but may allow liability to be limited,
+in such cases, the liability of Garmin, its employees, suppliers or licensors
+shall be limited to USD $50.00. 
+
+10.	Breach of Contract
+Upon a breach of contract by the Licensee, Garmin and its licensors are
+entitled to damages in respect of any direct loss which can be reasonably
+attributed to the breach by the Licensee. If the Licensee has acted with gross
+negligence or willful misconduct, Garmin and its licensors shall recover both
+direct and indirect costs from Licensee.
+
+11.	Indemnity
+Licensee undertakes to indemnify, hold harmless and defend Garmin and its
+directors, officers, shareholders, licensors, employees and agents from and
+against any claims or lawsuits, including attorney's fees, that arise or
+result of the Licensee’s execution of the License and which is not due to
+causes for which Garmin is responsible.
+
+12.	Governing Law
+This Evaluation Agreement shall be construed according to the laws of state of
+New York, United States of America, excluding the body of laws know as
+conflict of laws and hereby submits to the exclusive jurisdiction of the
+courts of New York.
+
+13.	Assignment
+Licensee shall not assign this Evaluation Agreement or any rights or
+obligations hereunder without the prior written consent of Garmin.  Any
+attempted assignment or delegation without such written consent shall be null
+and void.  
+
+14.	Termination
+Without prejudice to any other rights, Garmin may terminate this Evaluation
+Agreement for any reason including, but not limited to, if Licensee does not
+abide by the terms and conditions of this Evaluation Agreement.  Upon
+termination Licensee must promptly cease the use of the S212 and S332 and
+destroy all copies of the S212 and S332 and any documentation and other
+material provided by Garmin, or produced by the Licensee in connection with
+the Evaluation Agreement or the S212 or S332.
+
+15.	Third party beneficiaries  
+Garmin’s licensors are intended third party beneficiaries under this
+Evaluation Agreement. 
+
+16.	Publicity
+Licensee shall not issue any press releases or make any other public
+statements regarding this Evaluation Agreement, its terms and conditions, or
+the relationship of the parties without the express prior written approval of
+Garmin, which may be withheld at the discretion of Garmin.
+
+17. 	Waiver
+The failure by Garmin to enforce any provision of this Evaluation Agreement
+will not constitute a waiver of future enforcement of that or any other
+provision. 
+
+18.	Notices
+All notices required or permitted under this Evaluation Agreement will be in
+writing and delivered by email transmission.
+
+19. 	Entire Agreement
+This Evaluation Agreement constitutes the entire agreement and understanding
+between the You and Garmin with respect to evaluation of the S212 and S322,
+and supersedes all previous communications, representations or agreements,
+whether written or oral, with respect to the subject matter hereof.  Any
+waiver, modification or amendment of any provisions of this Evaluation
+Agreement will be effective only if in writing and signed by the duly
+authorized representative of both Licensee and Garmin.  
+
+
+The following license applies to source files including Nordic Semiconductor
+ASA copyright notices (Copyright © Nordic Semiconductor ASA. All rights
+reserved.). All other contents of this archive are subject to the preceding
+Evaluation Agreement for S212 and S332. 
+
+
+Copyright (c) Nordic Semiconductor ASA
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+ 
+  3. Neither the name of Nordic Semiconductor ASA nor the names of other
+     contributors to this software may be used to endorse or promote products
+     derived from this software without specific prior written permission.
+ 
+  4. This software must only be used in a processor manufactured by Nordic
+     Semiconductor ASA, or in a processor manufactured by a third party that is
+     used in combination with a processor manufactured by Nordic Semiconductor.
+ 
+ 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
